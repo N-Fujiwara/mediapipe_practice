@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import argparse
+import copy
 import cv2 as cv
 
 
@@ -37,7 +38,7 @@ class CaptureDevice:
 
     def loop(self, proc_func, title):
         while True:
-            image = self.cap_.capture()
+            image = self.capture()
             display_img = copy.deepcopy(image)
             process_img = cv.cvtColor(image, cv.COLOR_BGR2RGB)
 
