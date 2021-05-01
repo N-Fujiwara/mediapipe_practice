@@ -4,6 +4,7 @@ import argparse
 import numpy as np
 import cv2 as cv
 import mediapipe as mp
+import os
 from capture_device import CaptureDevice
 
 
@@ -17,7 +18,8 @@ def main():
     args = parser.parse_args()
 
     cap = CaptureDevice(args)
-    cap.loop(through, 'MediaPipe Face Detection Demo')
+    title = os.path.basename(__file__).split('.')[0]
+    cap.loop(through, title)
 
 if __name__ == '__main__':
     main()

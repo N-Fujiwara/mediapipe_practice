@@ -3,7 +3,7 @@
 import argparse
 import copy
 import cv2 as cv
-
+import cv_util
 
 class CaptureDevice:
     @classmethod
@@ -20,6 +20,7 @@ class CaptureDevice:
         cap.set(cv.CAP_PROP_FRAME_HEIGHT, args.height)
         self.cap_ = cap
         self.args_ = args
+        self.cvFpsCalc_ = cv_util.CvFpsCalc(buffer_len=10)
 
 
     def capture(self):
@@ -43,6 +44,10 @@ class CaptureDevice:
             process_img = cv.cvtColor(image, cv.COLOR_BGR2RGB)
 
             display_img = proc_func(process_img, display_img)
+
+            display_fps = self.cvFpsCalc_.get()
+            text_fps = [title, "FPS:" + str(display_fps)]
+            display_img = cv_util.draw_result_on_img(display_img, text_fps)
 
             key = cv.waitKey(1)  # キー処理(ESC：終了) 
             if key == 27:  # ESC
