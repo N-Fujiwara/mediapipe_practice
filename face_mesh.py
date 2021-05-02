@@ -38,8 +38,11 @@ class FaceMesh():
         )
 
 
-    def process(self, process_img, display_img):
+    def process(self, process_img):
         results = self.face_mesh_.process(process_img)
+        return results
+
+    def draw(self, results, display_img):
         if results.multi_face_landmarks is not None:
             for face_landmarks in results.multi_face_landmarks:
                 # 外接矩形の計算

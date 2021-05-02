@@ -29,13 +29,16 @@ class FaceDetection():
         )
 
 
-    def process(self, process_img, display_img):
+    def process(self, process_img):
         results = self.face_detection_.process(process_img)
+        return results
+
+
+    def draw(self, results, display_img):
         if results.detections is not None:
             for detection in results.detections:
                 # 描画
                 display_img = draw_detection(display_img, detection, self.verbose_)
-
         return display_img
 
 

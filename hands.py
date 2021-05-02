@@ -38,8 +38,12 @@ class Hands():
         )
 
 
-    def process(self, process_img, display_img):
+    def process(self, process_img):
         results = self.hands_.process(process_img)
+        return results
+
+
+    def draw(self, results, display_img):
         if results.multi_hand_landmarks is not None:
             for hand_landmarks, handedness in zip(results.multi_hand_landmarks,
                                                   results.multi_handedness):
