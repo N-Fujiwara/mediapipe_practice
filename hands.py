@@ -21,6 +21,7 @@ class Hands():
                         type=int,
                         default=0.5)
         parser.add_argument('--use_brect', action='store_true')
+        parser.add_argument('--show_z', action='store_true')
         return parser
 
 
@@ -29,6 +30,7 @@ class Hands():
         self.min_detection_confidence_ = args.min_detection_confidence
         self.min_tracking_confidence_ = args.min_tracking_confidence
         self.use_brect_ = args.use_brect
+        self.show_z_ = args.show_z
 
         mp_hands = mp.solutions.hands
         self.hands_ = mp_hands.Hands(
@@ -52,8 +54,10 @@ class Hands():
                 # 外接矩形の計算
                 brect = calc_bounding_rect(display_img, hand_landmarks)
                 # 描画
+                handedness_str = handedness.classification[0].label[0]
                 display_img = draw_landmarks(display_img, cx, cy,
-                                             hand_landmarks, handedness)
+                                             hand_landmarks, handedness_str,
+                                             self.show_z_)
                 display_img = draw_bounding_rect(self.use_brect_, display_img, brect)
         return display_img
 
@@ -108,7 +112,7 @@ def calc_bounding_rect(image, landmarks):
     return [x, y, x + w, y + h]
 
 
-def draw_landmarks(image, cx, cy, landmarks, handedness):
+def draw_landmarks(image, cx, cy, landmarks, handedness_str='R', show_z=False):
     image_width, image_height = image.shape[1], image.shape[0]
 
     landmark_point = []
@@ -120,7 +124,7 @@ def draw_landmarks(image, cx, cy, landmarks, handedness):
 
         landmark_x = min(int(landmark.x * image_width), image_width - 1)
         landmark_y = min(int(landmark.y * image_height), image_height - 1)
-        # landmark_z = landmark.z
+        landmark_z = landmark.z
 
         landmark_point.append((landmark_x, landmark_y))
 
@@ -151,6 +155,12 @@ def draw_landmarks(image, cx, cy, landmarks, handedness):
         # if index == 19:  # 小指：第1関節
         # if index == 20:  # 小指：指先
 
+        if show_z:
+            cv.putText(image, "z:" + str(round(landmark_z, 3)),
+                       (landmark_x - 10, landmark_y - 10),
+                       cv.FONT_HERSHEY_SIMPLEX, 0.5, draw_color, 1,
+                       cv.LINE_AA)
+
     # 接続線
     if len(landmark_point) > 0:
         cont_points = [
@@ -175,12 +185,10 @@ def draw_landmarks(image, cx, cy, landmarks, handedness):
 
     # 重心 + 左右
     if len(landmark_point) > 0:
-        # handedness.classification[0].index
-        # handedness.classification[0].score
         cv.circle(image, (cx, cy), 12, draw_color, 2)
-        cv.putText(image, handedness.classification[0].label[0],
+        cv.putText(image, handedness_str,
                    (cx - 6, cy + 6), cv.FONT_HERSHEY_SIMPLEX, 0.6, draw_color,
-                   2, cv.LINE_AA)  # label[0]:一文字目だけ = L or R
+                   2, cv.LINE_AA)
     return image
 
 

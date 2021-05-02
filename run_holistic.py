@@ -4,7 +4,7 @@ import argparse
 import numpy as np
 import os
 from capture_device import CaptureDevice
-from pose import Pose as Model
+from holistic import Holistic as Model
 
 
 def main():
