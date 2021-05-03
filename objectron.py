@@ -16,7 +16,7 @@ class Objectron():
         parser.add_argument("--max_num_objects",
                             help='max_num_objects',
                             type=int,
-                            default=5)
+                            default=3)
         parser.add_argument("--min_detection_confidence",
                             help='min_detection_confidence',
                             type=float,

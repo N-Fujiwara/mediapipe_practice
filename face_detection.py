@@ -14,7 +14,7 @@ class FaceDetection():
         parser.add_argument("--min_detection_confidence",
                         help='min_detection_confidence',
                         type=float,
-                        default=0.7)
+                        default=0.5)
         parser.add_argument('--verbose', action='store_true')
         return parser
 

@@ -11,7 +11,9 @@ draw_color = (241, 252, 102)
 class Hands():
     @classmethod
     def set_args(cls, parser):
-        parser.add_argument("--max_num_hands", type=int, default=2)
+        parser.add_argument("--max_num_hands",
+                            'max hands to detect',
+                            type=int, default=2)
         parser.add_argument("--min_detection_confidence",
                         help='min_detection_confidence',
                         type=float,

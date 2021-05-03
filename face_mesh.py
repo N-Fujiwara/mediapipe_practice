@@ -11,11 +11,13 @@ draw_color = (241, 252, 102)
 class FaceMesh():
     @classmethod
     def set_args(cls, parser):
-        parser.add_argument("--max_num_faces", type=int, default=1)
+        parser.add_argument("--max_num_faces",
+                            help='max faces to detect',
+                            type=int, default=1)
         parser.add_argument("--min_detection_confidence",
                         help='min_detection_confidence',
                         type=float,
-                        default=0.7)
+                        default=0.5)
         parser.add_argument("--min_tracking_confidence",
                         help='min_tracking_confidence',
                         type=int,

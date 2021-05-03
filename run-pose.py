@@ -8,7 +8,9 @@ from pose import Pose as Model
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
     parser = CaptureDevice.set_args(parser)
     parser = Model.set_args(parser)
     args = parser.parse_args()
