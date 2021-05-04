@@ -12,20 +12,19 @@ class Hands():
     @classmethod
     def set_args(cls, parser):
         parser.add_argument("--max_num_hands",
-                            'max hands to detect',
+                            help='max hands to detect',
                             type=int, default=2)
         parser.add_argument("--min_detection_confidence",
-                        help='min_detection_confidence',
-                        type=float,
-                        default=0.7)
+                            help='min_detection_confidence',
+                            type=float,
+                            default=0.7)
         parser.add_argument("--min_tracking_confidence",
-                        help='min_tracking_confidence',
-                        type=int,
-                        default=0.5)
+                            help='min_tracking_confidence',
+                            type=int,
+                            default=0.5)
         parser.add_argument('--use_brect', action='store_true')
         parser.add_argument('--show_z', action='store_true')
         return parser
-
 
     def __init__(self, args):
         self.max_num_hands_ = args.max_num_hands
@@ -41,11 +40,9 @@ class Hands():
             min_tracking_confidence=self.min_tracking_confidence_,
         )
 
-
     def process(self, process_img):
         results = self.hands_.process(process_img)
         return results
-
 
     def draw(self, results, display_img):
         if results.multi_hand_landmarks is not None:
@@ -60,7 +57,8 @@ class Hands():
                 display_img = draw_landmarks(display_img, cx, cy,
                                              hand_landmarks, handedness_str,
                                              self.show_z_)
-                display_img = draw_bounding_rect(self.use_brect_, display_img, brect)
+                display_img = draw_bounding_rect(
+                    self.use_brect_, display_img, brect)
         return display_img
 
 
@@ -130,7 +128,7 @@ def draw_landmarks(image, cx, cy, landmarks, handedness_str='R', show_z=False):
 
         landmark_point.append((landmark_x, landmark_y))
 
-        if 0<=index and index<=20:
+        if 0 <= index and index <= 20:
             cv.circle(image, (landmark_x, landmark_y), 5, draw_color, 2)
         if index in (4, 8, 12, 16, 20):  # 指先
             cv.circle(image, (landmark_x, landmark_y), 12, draw_color, 2)
@@ -166,15 +164,19 @@ def draw_landmarks(image, cx, cy, landmarks, handedness_str='R', show_z=False):
     # 接続線
     if len(landmark_point) > 0:
         cont_points = [
-            [2,3],   # 親指
-            [5,7],   # 人差し指
-            [9,11],  # 中指
-            [13,15], # 薬指
-            [17,19], # 小指
+            [2, 3],   # 親指
+            [5, 7],   # 人差し指
+            [9, 11],  # 中指
+            [13, 15],  # 薬指
+            [17, 19],  # 小指
         ]
         for st, en in cont_points:
-            for i in range(st, en+1):
-                cv.line(image, landmark_point[i], landmark_point[i+1], draw_color, 2)
+            for i in range(st, en + 1):
+                cv.line(image,
+                        landmark_point[i],
+                        landmark_point[i + 1],
+                        draw_color,
+                        2)
 
         # 手の平
         cv.line(image, landmark_point[0], landmark_point[1], draw_color, 2)
